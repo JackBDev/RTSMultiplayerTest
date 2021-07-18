@@ -43,7 +43,7 @@ public class UnitMovement : NetworkBehaviour
             return;
         }
 
-        if(!Mouse.current.rightButton.wasPressedThisFrame)
+        if(!Mouse.current.leftButton.wasPressedThisFrame)
         {
             return;
         }
