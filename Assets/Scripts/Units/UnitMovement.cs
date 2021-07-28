@@ -13,7 +13,7 @@ public class UnitMovement : NetworkBehaviour
 
     #region server
 
-    [Command] private void CmdMovement(Vector3 targetPosition)
+    [Command] public void CmdMovement(Vector3 targetPosition)
     {
         if(!NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
@@ -21,41 +21,6 @@ public class UnitMovement : NetworkBehaviour
         }
 
         agent.SetDestination(hit.position);
-    }
-
-    #endregion
-
-    #region client
-
-    public override void OnStartAuthority()
-    {
-        mainCamera = Camera.main;
-
-        //base.OnStartAuthority();
-    }
-
-    // Client Callback means that only the client will run update. Server will not run it.
-    [ClientCallback] private void Update()
-    {
-        if(!hasAuthority)
-        {
-            // If it's not the player's local client, don't do anything.
-            return;
-        }
-
-        if(!Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            return;
-        }
-
-        Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-
-        if(!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
-        {
-            return;
-        }
-
-        CmdMovement(hit.point);
     }
 
     #endregion
